@@ -18,9 +18,19 @@ void main() {
     }
     else {
         gl_Position = p1 + u * (p2 - p1) + v * (p0 - p1);
-        gl_Position.x = cos(atan(v, 1 - v)) * sin(atan(u, 1 - u));
-        gl_Position.y = sin(atan(v, 1 - v));
-        gl_Position.z = cos(atan(v, 1 - v)) * cos(atan(u, 1 - u));
+        float t = atan(v, 1 - v);
+        float sint = sin(t);
+        float a;
+        if (u / (1 - sint) > 1) {
+            a = asin(1);
+        }
+        else {
+            a = asin(u / (1 - sint));
+        }
+//        gl_Position.x = cos(atan(v, 1 - v)) * sin(atan(u, 1 - u));
+        gl_Position.x = cos(t) * sin(a);
+        gl_Position.y = sint;
+        gl_Position.z = cos(t) * cos(a);
     }
 
     gl_Position = MVP * gl_Position;

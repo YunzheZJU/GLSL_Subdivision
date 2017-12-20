@@ -520,8 +520,8 @@ void initVBO() {
 
 void setShader() {
     ///////////// Uniforms ////////////////////
-    shader.setUniform("Inner", 8);
-    shader.setUniform("Outer", 24);
+    shader.setUniform("Inner", 20);
+    shader.setUniform("Outer", 20);
     shader.setUniform("Routine", 1);
     shader.setUniform("LineWidth", 0.1f);
     shader.setUniform("LineColor", vec4(0.05f, 0.0f, 0.05f, 1.0f));
@@ -538,6 +538,7 @@ void updateMVPZero() {
 
 void updateMVPOne() {
     model = mat4(1.0f);
+    model = glm::translate(model, vec3(0.0f, -1.0f, 0.0f));
 //    model = glm::rotate(model, glm::radians(angle), vec3(0.0f, 1.0f, 0.0f));
 //    model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
 

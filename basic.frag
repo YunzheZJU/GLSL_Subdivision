@@ -17,6 +17,7 @@
 uniform float LineWidth;
 uniform vec4 LineColor;
 uniform vec4 QuadColor;
+uniform int Routine;
 
 noperspective in vec3 EdgeDistance;
 
@@ -52,5 +53,10 @@ float edgeMix() {
 
 void main() {
     float mixVal = edgeMix();
-    FragColor = mix(QuadColor, LineColor, mixVal);
+    if (Routine == 1) {
+        FragColor = mix(QuadColor, LineColor, mixVal);
+    }
+    else {
+        FragColor = mix(vec4(1.0, 0.5, 0.5, 1.0), LineColor, mixVal);
+    }
 }

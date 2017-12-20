@@ -3,35 +3,56 @@
 layout(triangles, equal_spacing, ccw) in;
 
 uniform mat4 MVP;
-uniform int Routine;
+
+float u;
+float v;
+vec4 p0;
+vec4 p1;
+vec4 p2;
+
+subroutine vec4 EvaluationPassType();
+subroutine uniform EvaluationPassType EvaluationPass;
+
+// Pass #1
+subroutine(EvaluationPassType)
+vec4 pass1() {
+    return p1 + u * (p2 - p1) + v * (p0 - p1);
+}
+
+// Pass #2
+subroutine(EvaluationPassType)
+vec4 pass2() {
+    vec4 position = pass1();
+    return vec4(normalize(vec3(position)), 1.0);
+}
+
+// Pass #3
+subroutine(EvaluationPassType)
+vec4 pass3() {
+    float t;
+    float diff = 1 - v;
+    if (diff <= 0) {
+        diff = 0.000001;
+    }
+    t = atan(v, diff);
+    float sint = sin(t);
+    float cost = cos(t);
+    float a;
+    if (u / (1 - sint) > 1) {
+        a = asin(1);
+    } else {
+        a = asin(u / (1 - sint));
+    }
+    return vec4(cost * sin(a), sint, cost * cos(a), 1.0);
+}
 
 void main() {
-    float u = gl_TessCoord.x;
-    float v = gl_TessCoord.y;
+    u = gl_TessCoord.x;
+    v = gl_TessCoord.y;
 
-    vec4 p0 = gl_in[0].gl_Position;
-    vec4 p1 = gl_in[1].gl_Position;
-    vec4 p2 = gl_in[2].gl_Position;
+    p0 = gl_in[0].gl_Position;
+    p1 = gl_in[1].gl_Position;
+    p2 = gl_in[2].gl_Position;
 
-    if (Routine == 1) {
-        gl_Position = p1 + u * (p2 - p1) + v * (p0 - p1);
-    }
-    else {
-        gl_Position = p1 + u * (p2 - p1) + v * (p0 - p1);
-        float t = atan(v, 1 - v);
-        float sint = sin(t);
-        float a;
-        if (u / (1 - sint) > 1) {
-            a = asin(1);
-        }
-        else {
-            a = asin(u / (1 - sint));
-        }
-//        gl_Position.x = cos(atan(v, 1 - v)) * sin(atan(u, 1 - u));
-        gl_Position.x = cos(t) * sin(a);
-        gl_Position.y = sint;
-        gl_Position.z = cos(t) * cos(a);
-    }
-
-    gl_Position = MVP * gl_Position;
+    gl_Position = MVP * EvaluationPass();
 }

@@ -69,18 +69,6 @@ void saveCamera(GLfloat *camera, GLfloat *target, GLfloat *polar) {
     cameramatrix[2][2] = polar[T];
 }
 
-void loadCamera(GLfloat *camera, GLfloat *target, GLfloat *polar) {
-    camera[X] = cameramatrix[0][0];
-    camera[Y] = cameramatrix[0][1];
-    camera[Z] = cameramatrix[0][2];
-    target[X] = cameramatrix[1][0];
-    target[Y] = cameramatrix[1][1];
-    target[Z] = cameramatrix[1][2];
-    polar[R] = cameramatrix[2][0];
-    polar[A] = cameramatrix[2][1];
-    polar[T] = cameramatrix[2][2];
-}
-
 void updateWindowcenter(int *window, int *windowcenter) {
     windowcenter[X] = glutGet(GLUT_WINDOW_X) + window[W] / 2.0;
     windowcenter[Y] = glutGet(GLUT_WINDOW_Y) + window[H] / 2.0;
@@ -132,7 +120,7 @@ bool screenshot(int width, int height) {
     glReadPixels(0, 0, width, height, GL_BGR, GL_UNSIGNED_BYTE, image);
 
     // Open a new file
-    sprintf(filename, "images/ScreenShot%03d.bmp", screenshotnum++);
+    sprintf(filename, "screenshot_%02d.bmp", screenshotnum++);
     fp = fopen(filename, "wb");
     if (fp == NULL) {
         cout << "Fail to open a new file!" << endl;
@@ -154,10 +142,4 @@ bool screenshot(int width, int height) {
     fclose(fp);
 
     return true;
-}
-
-float gauss(float x, float sigma2) {
-    double coeff = 1.0 / (glm::two_pi<double>() * sigma2);
-    double expon = -(x * x) / (2.0 * sigma2);
-    return (float) (coeff * exp(expon));
 }

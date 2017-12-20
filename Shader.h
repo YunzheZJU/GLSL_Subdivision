@@ -2,11 +2,10 @@
 // Created by Yunzhe on 2017/12/5.
 //
 
-#ifndef GPUBASEDRENDERING_A1_SHADER_H
-#define GPUBASEDRENDERING_A1_SHADER_H
+#ifndef GPUBASEDRENDERING_A3_SHADER_H
+#define GPUBASEDRENDERING_A3_SHADER_H
 
 #include "global.h"
-#include "textfile.h"
 #include <map>
 
 // Using namespace std for cout
@@ -40,6 +39,7 @@ private:
     bool fileExists(const string &fileName);
 
     string getExtension(const char *fileName);
+
 public:
     Shader();
 
@@ -93,4 +93,4 @@ public:
     const char *getTypeString(GLenum type);
 };
 
-#endif //GPUBASEDRENDERING_A1_SHADER_H
+#endif //GPUBASEDRENDERING_A3_SHADER_H

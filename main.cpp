@@ -4,11 +4,10 @@ int main(int argc, char *argv[]) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_RGBA | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
     glutInitWindowSize(1280, 720);
-    int windowHandle = glutCreateWindow("GPU Based Rendering: A1");
+    glutCreateWindow("GPU Based Rendering: A3");
 
     // Set the background color - dark grey
     glClearColor(0.1, 0.1, 0.1, 0.0);
-//    glColor3f(0.1, 0.3, 0.8);
 
     glutDisplayFunc(Redraw);
     glutReshapeFunc(Reshape);
@@ -16,7 +15,6 @@ int main(int argc, char *argv[]) {
     glutPassiveMotionFunc(ProcessMouseMove);
     glutEntryFunc(ProcessFocus);
     glutKeyboardFunc(ProcessNormalKey);
-    glutSpecialFunc(ProcessSpecialKey);
     glutIdleFunc(Idle);
 
     GLenum glewErr = glewInit();
@@ -29,11 +27,8 @@ int main(int argc, char *argv[]) {
         exit(1);
     }
 
-//    SetUpLights();
     initShader();
     initVBO();
-    setupFBO();
-    setupVAO();
     setShader();
 
     glutMainLoop();

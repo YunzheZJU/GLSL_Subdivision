@@ -2,17 +2,24 @@
 
 layout(vertices = 3) out;
 
-uniform int Outer;
-uniform int Inner;
+uniform int MinTessLevel;
+uniform int MaxTessLevel;
+uniform float MaxDepth;
+uniform float MinDepth;
+
+uniform mat4 ModelViewMatrix;
 
 void main() {
+    vec4 p = ModelViewMatrix * gl_in[gl_InvocationID].gl_Position;
+    float depth = clamp((abs(p.z) - MinDepth) / (MaxDepth - MinDepth), 0.0, 1.0);
+    float tessLevel = mix(MaxTessLevel, MinTessLevel, depth);
     // Pass along the vertex position unmodified
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 
-    gl_TessLevelOuter[0] = float(Outer);
-    gl_TessLevelOuter[1] = float(Outer);
-    gl_TessLevelOuter[2] = float(Outer);
+    gl_TessLevelOuter[0] = float(tessLevel);
+    gl_TessLevelOuter[1] = float(tessLevel);
+    gl_TessLevelOuter[2] = float(tessLevel);
 
-    gl_TessLevelInner[0] = float(Inner);
-    gl_TessLevelInner[1] = float(Inner);
+    gl_TessLevelInner[0] = float(tessLevel);
+    gl_TessLevelInner[1] = float(tessLevel);
 }

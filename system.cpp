@@ -94,6 +94,10 @@ void Redraw() {
     // Draw something here
     updateMVPZero();
     updateMVPOne();
+    shader.setUniform("Routine", 1);
+    glBindVertexArray(vaoHandle);
+    glDrawArrays(GL_PATCHES, 0, 4);
+    shader.setUniform("Routine", 2);
     glBindVertexArray(vaoHandle);
     glDrawArrays(GL_PATCHES, 0, 4);
 //    ogre->render();
@@ -504,21 +508,21 @@ void initVBO() {
 //    torus = new VBOTorus(0.7f * 2, 0.3f * 2, 50, 50);
 //    cube = new VBOCube();
 //    ogre = new VBOMeshAdj("media/bs_ears.obj");
-    float v[] = {-1.0f, -1.0f, 0.0f,
-                 1.0f, -1.0f, 0.0f,
-                 1.0f, 1.0f, 0.0f,
-                 -1.0f, 1.0f, 0.0f};
+    float v[] = {0.0f, 1.0f, 0.0f,
+                 0.0f, 0.0f, 1.0f,
+                 1.0f, 0.0f, 0.0f};
 
     glGenBuffers(1, &vboHandle);
 
     glBindBuffer(GL_ARRAY_BUFFER, vboHandle);
-    glBufferData(GL_ARRAY_BUFFER, 12 * sizeof(float), v, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), v, GL_STATIC_DRAW);
 }
 
 void setShader() {
     ///////////// Uniforms ////////////////////
-    shader.setUniform("Inner", 4);
-    shader.setUniform("Outer", 4);
+    shader.setUniform("Inner", 8);
+    shader.setUniform("Outer", 24);
+    shader.setUniform("Routine", 1);
     shader.setUniform("LineWidth", 0.1f);
     shader.setUniform("LineColor", vec4(0.05f, 0.0f, 0.05f, 1.0f));
     shader.setUniform("QuadColor", vec4(1.0f, 1.0f, 1.0f, 1.0f));

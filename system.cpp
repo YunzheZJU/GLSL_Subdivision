@@ -461,7 +461,7 @@ void setShader() {
     pass2Index = glGetSubroutineIndex(shaderProgram, GL_TESS_EVALUATION_SHADER, "pass2");
     pass3Index = glGetSubroutineIndex(shaderProgram, GL_TESS_EVALUATION_SHADER, "pass3");
     // Set the number of vertices per patch.  IMPORTANT!!
-    glPatchParameteri(GL_PATCH_VERTICES, 4);
+    glPatchParameteri(GL_PATCH_VERTICES, 3);
     ///////////// Uniforms ////////////////////
     shader.setUniform("MinTessLevel", 2);
     shader.setUniform("MaxDepth", 20.0f);

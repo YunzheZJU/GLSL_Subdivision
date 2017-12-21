@@ -3,7 +3,12 @@
 layout(triangles) in;
 layout(triangle_strip, max_vertices = 3) out;
 
+in vec3 TENormal[];
+in vec4 TEPosition[];
 noperspective out vec3 EdgeDistance;
+
+out vec3 Normal;
+out vec4 Position;
 
 uniform mat4 ViewportMatrix;
 
@@ -23,14 +28,20 @@ void main() {
     float hc = abs(b * sin(alpha));
 
     EdgeDistance = vec3(ha, 0, 0);
+    Normal = TENormal[0];
+    Position = TEPosition[0];
     gl_Position = gl_in[0].gl_Position;
     EmitVertex();
 
     EdgeDistance = vec3(0, hb, 0);
+    Normal = TENormal[1];
+    Position = TEPosition[1];
     gl_Position = gl_in[1].gl_Position;
     EmitVertex();
 
     EdgeDistance = vec3(0, 0, hc);
+    Normal = TENormal[2];
+    Position = TEPosition[2];
     gl_Position = gl_in[2].gl_Position;
     EmitVertex();
 

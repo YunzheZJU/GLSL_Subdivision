@@ -25,6 +25,7 @@ bool bMsaa = false;                                 // Switch of multisampling a
 bool bCamera = true;                                // Switch of camera/target control
 bool bFocus = true;                                 // Status of window focus
 bool bMouse = false;                                // Whether mouse postion should be moved
+bool bDrawWireFrame = true;                         // Whether draw the wire frame or not
 
 void Idle() {
     glutPostRedisplay();
@@ -322,6 +323,12 @@ void ProcessNormalKey(unsigned char k, int x, int y) {
             }
             break;
         }
+        case 'O':
+        case 'o': {
+            bDrawWireFrame = !bDrawWireFrame;
+            cout << "O pressed. Switch on/off wire frame." << endl;
+            strcpy(message, "O pressed. Switch on/off wire frame.");
+        }
             // 最大细分层次
         case '+': {
             cout << "+ pressed." << endl;
@@ -461,6 +468,10 @@ void setShader() {
     shader.setUniform("MinDepth", 5.0f);
     shader.setUniform("LineWidth", 0.1f);
     shader.setUniform("LineColor", vec4(0.05f, 0.0f, 0.05f, 1.0f));
+    shader.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
+    shader.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
+    shader.setUniform("Material.Shininess", 100.0f);
+    shader.setUniform("Light.Intensity", vec3(1.0f, 1.0f, 1.0f));
     /////////////////////////////////////////////
     updateShader();
 }
@@ -481,6 +492,8 @@ void updateShader() {
     shader.setUniform("MVP", projection * mv);
     shader.setUniform("ViewportMatrix", viewport);
     shader.setUniform("MaxTessLevel", maxTessLevel);
+    shader.setUniform("DrawWireFrame", bDrawWireFrame);
+    shader.setUniform("Light.Position", view * vec4(0.0f, 0.0f, 10.0f, 1.0f));
 }
 
 void initShader() {
